@@ -3,41 +3,55 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
-  entry: "./src/index.js",
-  output: {
-    path: path.resolve(__dirname, "public"),
-    filename: "index_bundle.js",
-    publicPath: "/"
-  },
-  module: {
-    rules: [
-      {
-        test: /\.(js)$/,
-        use: ["babel-loader", "eslint-loader"],
-        exclude: /node_modules/
-      },
-      {
-        test: /\.(css)$/,
-        use: ["style-loader", "css-loader", 'postcss-loader']
-      },
-      {
-        test: /\.s[ac]ss$/i,
-        use: ["style-loader", "css-loader", 'postcss-loader', "sass-loader"]
-      },
-      {
-        test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
-        loader: 'url-loader',
-        options: {
-          limit: 10000
-        }
-      }
+    entry: "./src/index.js",
+    output: {
+        path: path.resolve(__dirname, "public"),
+        filename: '[name].[contenthash].js',
+        publicPath: "/"
+    },
+    optimization: {
+        moduleIds: 'hashed',
+        runtimeChunk: 'single',
+        splitChunks: {
+            cacheGroups: {
+                vendor: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendors',
+                    chunks: 'all',
+                },
+            },
+        },
+    },
+    module: {
+        rules: [
+            {
+                test: /\.(js)$/,
+                use: ["babel-loader", "eslint-loader"],
+                exclude: /node_modules/
+            },
+            {
+                test: /\.(css)$/,
+                use: ["style-loader", "css-loader", 'postcss-loader']
+            },
+            {
+                test: /\.s[ac]ss$/i,
+                use: ["style-loader", "css-loader", 'postcss-loader', "sass-loader"]
+            },
+            {
+                test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
+                loader: 'url-loader',
+                options: {
+                    limit: 10000
+                }
+            }
+        ]
+    },
+    mode: "development",
+    plugins: [
+        new HtmlWebpackPlugin({
+            title: 'Caching',
+            template: "src/index.html"
+        }),
+        new CleanWebpackPlugin()
     ]
-  },
-  mode: "development",
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: "src/index.html"
-    }),
-    new CleanWebpackPlugin()
-  ]
 };
