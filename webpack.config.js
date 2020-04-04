@@ -7,7 +7,8 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, "public"),
         filename: '[name].[contenthash].js',
-        publicPath: "/"
+        publicPath: "/",
+        jsonpFunction: `webpackJsonp_${Date.now()}`
     },
     optimization: {
         moduleIds: 'hashed',
