@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
     entry: "./src/index.js",
@@ -32,11 +33,11 @@ module.exports = {
             },
             {
                 test: /\.(css)$/,
-                use: ["style-loader", "css-loader", 'postcss-loader']
+                use: [MiniCssExtractPlugin.loader, "css-loader", 'postcss-loader']
             },
             {
                 test: /\.s[ac]ss$/i,
-                use: ["style-loader", "css-loader", 'postcss-loader', "sass-loader"]
+                use: [MiniCssExtractPlugin.loader, "css-loader", 'postcss-loader', "sass-loader"]
             },
             {
                 test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
@@ -52,6 +53,9 @@ module.exports = {
         new HtmlWebpackPlugin({
             title: 'Caching',
             template: "src/index.html"
+        }),
+        new MiniCssExtractPlugin({
+            filename: 'index.css'
         }),
         new CleanWebpackPlugin()
     ]
