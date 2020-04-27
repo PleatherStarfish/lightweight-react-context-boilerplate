@@ -55,7 +55,7 @@ module.exports = {
             template: "src/index.html"
         }),
         new MiniCssExtractPlugin({
-            filename: 'index.css'
+            filename: '[name].[contenthash].css'
         }),
         new CleanWebpackPlugin()
     ]
